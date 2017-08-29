@@ -1,0 +1,24 @@
+spring:
+    jpa:
+        database: MYSQL
+        database-platform: org.hibernate.dialect.MySQLInnoDBDialect
+        show-sql: false
+    datasource:
+        url: jdbc:mysql://localhost:3306/pintabar_business_management?createDatabaseIfNotExist=true
+        username: root
+        password: password
+    aop:
+        proxy-target-class: true
+
+liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+
+cxf:
+    path: /api/businessManagement
+server:
+    port: 8083
+
+eureka:
+    client:
+        register-with-eureka: false
+        fetch-registry: false
