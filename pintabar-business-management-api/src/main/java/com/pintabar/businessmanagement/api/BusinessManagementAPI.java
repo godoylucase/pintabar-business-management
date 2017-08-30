@@ -1,5 +1,8 @@
 package com.pintabar.businessmanagement.api;
 
+import com.pintabar.commons.exceptions.business.InvalidBusinessException;
+import com.pintabar.commons.exceptions.general.DataNotFoundException;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -19,9 +22,21 @@ import javax.ws.rs.core.Response;
 public interface BusinessManagementAPI {
 
 	@GET
-	@Path("/business/{businessUuid}/menuInstance")
+	@Path("/{businessUuid}/menuInstance")
 	Response getMenuInstances(
 			@PathParam("businessUuid") String businessUuid,
 			@DefaultValue("false") @QueryParam("isDeleted") boolean isDeleted);
+
+	@GET
+	@Path("/{businessUuid}/menuInstance/{menuInstanceUuid}/validate")
+	Response validateMenuInstance(
+			@PathParam("businessUuid") String businessUuid,
+			@PathParam("menuInstanceUuid") String menuInstanceUuid);
+
+	@GET
+	@Path("/{businessUuid}/tableUnit/{tableUnitUuid}/validate")
+	Response validateTableUnit(
+			@PathParam("businessUuid") String businessUuid,
+			@PathParam("tableUnitUuid") String tableUnitUuid) throws DataNotFoundException;
 
 }

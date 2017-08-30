@@ -2,6 +2,7 @@ package com.pintabar.businessmanagement.app.api.impl;
 
 import com.pintabar.businessmanagement.api.BusinessManagementAPI;
 import com.pintabar.businessmanagement.service.BusinessManagementService;
+import com.pintabar.commons.exceptions.general.DataNotFoundException;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.core.Response;
@@ -21,6 +22,11 @@ public class BusinessManagementAPIImpl implements BusinessManagementAPI {
 	@Override
 	public Response getMenuInstances(String businessUuid, boolean isDeleted) {
 		return Response.ok(businessManagementService.getMenuInstances(businessUuid, isDeleted)).build();
+	}
+
+	@Override
+	public Response validateTableUnit(String businessUuid, String tableUnitUuid) throws DataNotFoundException {
+		return Response.ok(businessManagementService.validateTableUnit(businessUuid, tableUnitUuid)).build();
 	}
 
 }

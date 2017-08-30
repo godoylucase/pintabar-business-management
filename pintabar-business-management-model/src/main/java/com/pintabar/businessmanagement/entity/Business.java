@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
+import org.springframework.data.annotation.Transient;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -43,4 +44,8 @@ public class Business extends UUIDBaseEntity implements IBusiness {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "business")
 	private List<TableUnit> tableUnits = new ArrayList<>();
+
+	public boolean isValid() {
+		return !this.deleted;
+	}
 }
