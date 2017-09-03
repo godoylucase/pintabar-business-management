@@ -61,22 +61,24 @@ public class BusinessManagementServiceImpl implements BusinessManagementService 
 	}
 
 	@Override
+	@Transactional
 	public Boolean validateMenuInstance(String businessUuid, String menuInstanceUuid) throws DataNotFoundException {
-		return isValidBusiness(businessUuid) && isValidMenuInstance(menuInstanceUuid);
+		return isValidBusiness(businessUuid) && isValidMenuInstance(menuInstanceUuid, businessUuid);
 	}
 
 	@Override
+	@Transactional
 	public Boolean validateMenuItemInstance(String businessUuid, String menuItemInstanceUuid) throws DataNotFoundException {
-		return isValidBusiness(businessUuid) && isValidMenuItemInstance(menuItemInstanceUuid);
+		return isValidBusiness(businessUuid) && isValidMenuItemInstance(menuItemInstanceUuid, businessUuid);
 	}
 
-	private boolean isValidMenuItemInstance(String menuItemInstanceUuid) throws DataNotFoundException {
-		return menuItemInstanceRepository.findByUuid(menuItemInstanceUuid)
+	private boolean isValidMenuItemInstance(String menuItemInstanceUuid, String businessUuid) throws DataNotFoundException {
+		return menuItemInstanceRepository.findMenuItemInstanceByUuidAndBusinessUuid(menuItemInstanceUuid, businessUuid)
 				.orElseThrow(() -> new DataNotFoundException(ErrorCode.MENU_ITEM_INSTANCE_NOT_FOUND)).isFullAvailable();
 	}
 
-	private boolean isValidMenuInstance(String menuInstanceUuid) throws DataNotFoundException {
-		return menuInstanceRepository.findByUuid(menuInstanceUuid)
+	private boolean isValidMenuInstance(String menuInstanceUuid, String businessUuid) throws DataNotFoundException {
+		return menuInstanceRepository.findMenuInstanceByUuidAndBusinessUuid(menuInstanceUuid, businessUuid)
 				.orElseThrow(() -> new DataNotFoundException(ErrorCode.MENU_INSTANCE_NOT_FOUND)).isFullAvailable();
 	}
 

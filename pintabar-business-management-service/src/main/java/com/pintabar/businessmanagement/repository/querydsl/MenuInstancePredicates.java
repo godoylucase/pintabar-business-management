@@ -8,14 +8,20 @@ import com.querydsl.core.types.dsl.BooleanExpression;
  */
 public class MenuInstancePredicates {
 
-	public static BooleanExpression whereBusiness(String uuid) {
-		return QMenuInstance.menuInstance.menu.business.uuid.eq(uuid);
+	public static BooleanExpression whereBusiness(QMenuInstance qMenuInstance, String uuid) {
+		return qMenuInstance.menu.business.uuid.eq(uuid);
 	}
 
-	public static BooleanExpression deletedMenuInstance(Boolean isDeleted) {
+	public static BooleanExpression deletedMenuInstance(QMenuInstance qMenuInstance, Boolean isDeleted) {
 		if (isDeleted != null && !isDeleted) {
-			return QMenuInstance.menuInstance.menu.deleted.isFalse();
+			return qMenuInstance.menu.deleted.isFalse();
 		}
-		return QMenuInstance.menuInstance.menu.deleted.isTrue();
+		return qMenuInstance.menu.deleted.isTrue();
+	}
+
+	public static BooleanExpression whereMenuInstanceWithUuidAndBusinessUuid(
+			QMenuInstance qMenuInstance, String menuInstanceUuid, String businessUuid) {
+		return qMenuInstance.uuid.eq(menuInstanceUuid)
+				.and(qMenuInstance.menu.business.uuid.eq(businessUuid));
 	}
 }
