@@ -1,6 +1,5 @@
 package com.pintabar.businessmanagement.api;
 
-import com.pintabar.commons.exceptions.business.InvalidBusinessException;
 import com.pintabar.commons.exceptions.general.DataNotFoundException;
 
 import javax.ws.rs.Consumes;
@@ -32,6 +31,12 @@ public interface BusinessManagementAPI {
 	Response validateMenuInstance(
 			@PathParam("businessUuid") String businessUuid,
 			@PathParam("menuInstanceUuid") String menuInstanceUuid) throws DataNotFoundException;
+
+	@GET
+	@Path("/{businessUuid}/menuItemInstance/{menuItemInstanceUuid}/validate")
+	Response validateMenuItemInstance(
+			@PathParam("businessUuid") String businessUuid,
+			@PathParam("menuItemInstanceUuid") String menuItemInstanceUuid) throws DataNotFoundException;
 
 	@GET
 	@Path("/{businessUuid}/tableUnit/{tableUnitUuid}/validate")

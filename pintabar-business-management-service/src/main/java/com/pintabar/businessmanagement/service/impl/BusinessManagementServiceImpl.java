@@ -3,10 +3,9 @@ package com.pintabar.businessmanagement.service.impl;
 import com.google.common.base.Preconditions;
 import com.pintabar.businessmanagement.dto.MenuInstanceDTO;
 import com.pintabar.businessmanagement.dtomapper.MenuInstanceDTOMapper;
-import com.pintabar.businessmanagement.entity.Business;
-import com.pintabar.businessmanagement.entity.MenuInstance;
 import com.pintabar.businessmanagement.repository.BusinessRepository;
 import com.pintabar.businessmanagement.repository.MenuInstanceRepository;
+import com.pintabar.businessmanagement.repository.MenuItemInstanceRepository;
 import com.pintabar.businessmanagement.repository.TableUnitRepository;
 import com.pintabar.businessmanagement.service.BusinessManagementService;
 import com.pintabar.commons.exceptions.ErrorCode;
@@ -26,13 +25,15 @@ public class BusinessManagementServiceImpl implements BusinessManagementService 
 	private final BusinessRepository businessRepository;
 	private final TableUnitRepository tableUnitRepository;
 	private final MenuInstanceRepository menuInstanceRepository;
+	private final MenuItemInstanceRepository menuItemInstanceRepository;
 	private final MenuInstanceDTOMapper menuInstanceDTOMapper;
 
 	public BusinessManagementServiceImpl(BusinessRepository businessRepository, TableUnitRepository tableUnitRepository,
-										 MenuInstanceRepository menuInstanceRepository, MenuInstanceDTOMapper menuInstanceDTOMapper) {
+										 MenuInstanceRepository menuInstanceRepository, MenuItemInstanceRepository menuItemInstanceRepository, MenuInstanceDTOMapper menuInstanceDTOMapper) {
 		this.businessRepository = businessRepository;
 		this.tableUnitRepository = tableUnitRepository;
 		this.menuInstanceRepository = menuInstanceRepository;
+		this.menuItemInstanceRepository = menuItemInstanceRepository;
 		this.menuInstanceDTOMapper = menuInstanceDTOMapper;
 	}
 
@@ -64,9 +65,19 @@ public class BusinessManagementServiceImpl implements BusinessManagementService 
 		return isValidBusiness(businessUuid) && isValidMenuInstance(menuInstanceUuid);
 	}
 
+	@Override
+	public Boolean validateMenuItemInstance(String businessUuid, String menuItemInstanceUuid) throws DataNotFoundException {
+		return isValidBusiness(businessUuid) && isValidMenuItemInstance(menuItemInstanceUuid);
+	}
+
+	private boolean isValidMenuItemInstance(String menuItemInstanceUuid) throws DataNotFoundException {
+		return menuItemInstanceRepository.findByUuid(menuItemInstanceUuid)
+				.orElseThrow(() -> new DataNotFoundException(ErrorCode.MENU_ITEM_INSTANCE_NOT_FOUND)).isFullAvailable();
+	}
+
 	private boolean isValidMenuInstance(String menuInstanceUuid) throws DataNotFoundException {
 		return menuInstanceRepository.findByUuid(menuInstanceUuid)
-				.orElseThrow(() -> new DataNotFoundException(ErrorCode.MENU_ITEM_NOT_FOUND)).isFullyAvailable();
+				.orElseThrow(() -> new DataNotFoundException(ErrorCode.MENU_INSTANCE_NOT_FOUND)).isFullAvailable();
 	}
 
 	private boolean isValidTableUnit(String businessUuid, String tableUnitUuid) throws DataNotFoundException {

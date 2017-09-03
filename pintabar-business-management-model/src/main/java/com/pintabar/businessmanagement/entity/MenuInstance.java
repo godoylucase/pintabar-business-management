@@ -35,7 +35,7 @@ public class MenuInstance extends UUIDBaseEntity implements IMenuInstance {
 	@OneToMany(mappedBy = "menuInstance")
 	private Set<MenuCategoryInstance> menuCategoryInstances = new HashSet<>();
 
-	public boolean isFullyAvailable() {
+	public boolean isFullAvailable() {
 		return this.available && !menu.isDeleted();
 	}
 }
