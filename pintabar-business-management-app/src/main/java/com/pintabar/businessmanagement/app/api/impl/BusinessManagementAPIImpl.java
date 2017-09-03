@@ -25,6 +25,11 @@ public class BusinessManagementAPIImpl implements BusinessManagementAPI {
 	}
 
 	@Override
+	public Response validateMenuInstance(String businessUuid, String menuInstanceUuid) throws DataNotFoundException {
+		return Response.ok(businessManagementService.validateMenuInstance(businessUuid, menuInstanceUuid)).build();
+	}
+
+	@Override
 	public Response validateTableUnit(String businessUuid, String tableUnitUuid) throws DataNotFoundException {
 		return Response.ok(businessManagementService.validateTableUnit(businessUuid, tableUnitUuid)).build();
 	}

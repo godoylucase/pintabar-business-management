@@ -16,4 +16,6 @@ public interface BusinessManagementService {
 	List<MenuInstanceDTO> getMenuInstances(String businessUuid, Boolean isDeleted);
 
 	Boolean validateTableUnit(String businessUuid, String tableUnitUuid) throws DataNotFoundException;
+
+	Boolean validateMenuInstance(String businessUuid, String menuInstanceUuid) throws DataNotFoundException;
 }

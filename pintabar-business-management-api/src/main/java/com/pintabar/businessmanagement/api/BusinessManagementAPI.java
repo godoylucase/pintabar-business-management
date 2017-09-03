@@ -31,7 +31,7 @@ public interface BusinessManagementAPI {
 	@Path("/{businessUuid}/menuInstance/{menuInstanceUuid}/validate")
 	Response validateMenuInstance(
 			@PathParam("businessUuid") String businessUuid,
-			@PathParam("menuInstanceUuid") String menuInstanceUuid);
+			@PathParam("menuInstanceUuid") String menuInstanceUuid) throws DataNotFoundException;
 
 	@GET
 	@Path("/{businessUuid}/tableUnit/{tableUnitUuid}/validate")

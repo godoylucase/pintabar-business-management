@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.pintabar.businessmanagement.dto.MenuInstanceDTO;
 import com.pintabar.businessmanagement.dtomapper.MenuInstanceDTOMapper;
 import com.pintabar.businessmanagement.entity.Business;
+import com.pintabar.businessmanagement.entity.MenuInstance;
 import com.pintabar.businessmanagement.repository.BusinessRepository;
 import com.pintabar.businessmanagement.repository.MenuInstanceRepository;
 import com.pintabar.businessmanagement.repository.TableUnitRepository;
@@ -58,15 +59,24 @@ public class BusinessManagementServiceImpl implements BusinessManagementService 
 		return isValidBusiness(businessUuid) && isValidTableUnit(businessUuid, tableUnitUuid);
 	}
 
+	@Override
+	public Boolean validateMenuInstance(String businessUuid, String menuInstanceUuid) throws DataNotFoundException {
+		return isValidBusiness(businessUuid) && isValidMenuInstance(menuInstanceUuid);
+	}
+
+	private boolean isValidMenuInstance(String menuInstanceUuid) throws DataNotFoundException {
+		return menuInstanceRepository.findByUuid(menuInstanceUuid)
+				.orElseThrow(() -> new DataNotFoundException(ErrorCode.MENU_ITEM_NOT_FOUND)).isFullyAvailable();
+	}
+
 	private boolean isValidTableUnit(String businessUuid, String tableUnitUuid) throws DataNotFoundException {
 		return tableUnitRepository.findTableUnitByUuidAndBusinessUuid(tableUnitUuid, businessUuid)
 				.orElseThrow(() -> new DataNotFoundException(ErrorCode.TABLE_UNIT_NOT_FOUND)) != null;
 	}
 
 	private boolean isValidBusiness(String businessUuid) throws DataNotFoundException {
-		Business business = businessRepository.findByUuid(businessUuid)
-				.orElseThrow(() -> new DataNotFoundException(ErrorCode.BUSINESS_NOT_FOUND));
-		return business.isValid();
+		return businessRepository.findByUuid(businessUuid)
+				.orElseThrow(() -> new DataNotFoundException(ErrorCode.BUSINESS_NOT_FOUND)).isValid();
 	}
 
 }
